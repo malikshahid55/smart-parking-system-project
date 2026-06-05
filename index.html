@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Parking System | User Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="main-nav">
+    <div class="container">
+      <a href="index.html" class="nav-logo" id="logo-link">
+        <span class="accent-dot"></span> Smart Parking
+      </a>
+      <div class="nav-links" id="nav-links-container">
+        <a href="index.html" class="nav-item active" id="user-nav-link">User Portal</a>
+        <a href="admin.html" class="nav-item" id="admin-nav-link">Admin Portal</a>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Dark Mode">
+          <svg class="sun-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" id="sun-svg">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="container">
+    
+    <!-- Top Greeting Section -->
+    <header class="page-header" id="page-header-section">
+      <div>
+        <h1 class="page-title" id="page-title-heading">Book Your Parking Spot</h1>
+        <p class="page-subtitle" id="page-subtitle-desc">Find, book, and manage your reservation instantly.</p>
+      </div>
+    </header>
+
+    <!-- Error State Box -->
+    <div class="error-container" id="api-error-alert" role="alert">
+      <strong>Connection Error:</strong> Unable to connect to the parking server. Please verify if JSON Server is running locally.
+    </div>
+
+    <!-- Main Grid Dashboard layout -->
+    <div class="dashboard-grid" id="main-dashboard-grid">
+      
+      <!-- Left Column: Reservation Form -->
+      <section class="card-panel" id="booking-form-section">
+        <h2 class="card-panel-title" id="form-panel-title">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Reserve a Spot
+        </h2>
+        
+        <form id="booking-form" novalidate>
+          <!-- Driver Name -->
+          <div class="form-group" id="group-driver">
+            <label for="driverName" class="form-label">Driver Full Name</label>
+            <input type="text" id="driverName" class="form-control" placeholder="e.g. John Doe" required minlength="3">
+            <span class="invalid-feedback" id="driver-error">
+              Please enter a valid name (at least 3 characters).
+            </span>
+          </div>
+
+          <!-- Vehicle License Plate -->
+          <div class="form-group" id="group-plate">
+            <label for="vehiclePlate" class="form-label">Vehicle Plate Number</label>
+            <input type="text" id="vehiclePlate" class="form-control" placeholder="e.g. ABC-1234" required>
+            <span class="invalid-feedback" id="plate-error">
+              Please enter a valid plate (format: ABC-1234 or similar alphanumeric).
+            </span>
+          </div>
+
+          <!-- Vehicle Type -->
+          <div class="form-group" id="group-type">
+            <label for="vehicleType" class="form-label">Vehicle Type</label>
+            <select id="vehicleType" class="form-control" required>
+              <option value="" disabled selected>Select vehicle type</option>
+              <option value="Regular">Regular Car</option>
+              <option value="EV">Electric Vehicle (EV)</option>
+              <option value="Motorcycle">Motorcycle</option>
+            </select>
+            <span class="invalid-feedback" id="type-error">
+              Please choose a vehicle type.
+            </span>
+          </div>
+
+          <!-- Contact Number -->
+          <div class="form-group" id="group-phone">
+            <label for="contactPhone" class="form-label">Contact Number</label>
+            <input type="tel" id="contactPhone" class="form-control" placeholder="e.g. 0300-1234567" required>
+            <span class="invalid-feedback" id="phone-error">
+              Please enter a valid contact number (11-12 digits, e.g. 0300-1234567).
+            </span>
+          </div>
+
+          <!-- Booking Date -->
+          <div class="form-group" id="group-date">
+            <label for="bookingDate" class="form-label">Booking Date</label>
+            <input type="date" id="bookingDate" class="form-control" required>
+            <span class="invalid-feedback" id="date-error">
+              Please select a valid date (today or future).
+            </span>
+          </div>
+
+          <!-- Parking Duration -->
+          <div class="form-group" id="group-duration">
+            <label for="duration" class="form-label">Duration (Hours)</label>
+            <input type="number" id="duration" class="form-control" placeholder="1 to 24 hours" required min="1" max="24">
+            <span class="invalid-feedback" id="duration-error">
+              Please choose a duration between 1 and 24 hours.
+            </span>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" id="btn-submit-booking">
+            Confirm Booking
+          </button>
+        </form>
+      </section>
+
+      <!-- Right Column: Parking Overview & Slots list -->
+      <section class="card-panel" id="overview-section">
+        <!-- List Toolbar: Search & Filters -->
+        <div class="toolbar" id="list-toolbar">
+          <h2 class="card-panel-title" id="overview-panel-title" style="margin-bottom: 0;">Live Reservations</h2>
+          
+          <div class="toolbar-controls" id="toolbar-controls-wrapper">
+            <!-- Search bar -->
+            <div class="search-wrapper" id="search-bar-wrapper">
+              <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+              <input type="text" id="search-input" class="form-control search-input" placeholder="Search by name or plate...">
+            </div>
+
+            <!-- Vehicle Type filter -->
+            <select id="filter-type" class="form-control filter-select">
+              <option value="all">All Vehicles</option>
+              <option value="Regular">Regular Only</option>
+              <option value="EV">EV Only</option>
+              <option value="Motorcycle">Motorcycle Only</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Loading Spinner Container -->
+        <div class="loading-container" id="list-loading-spinner">
+          <div class="spinner"></div>
+          <p>Fetching parking slots info...</p>
+        </div>
+
+        <!-- Dynamic List Grid -->
+        <div class="reservations-container" id="reservations-list-container" style="display: none;">
+          <!-- Items will be generated dynamically by JS -->
+        </div>
+
+        <!-- Empty state placeholder -->
+        <div class="empty-state" id="empty-state-card" style="display: none;">
+          <div class="empty-icon">🚗</div>
+          <h3>No active reservations found</h3>
+          <p>Book a spot on the left side to get started.</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Page Footer -->
+  <footer id="main-footer">
+    <div class="container">
+      <p>&copy; 2026 Smart Parking System. Designed for BSCS Web Technologies Capstone.</p>
+    </div>
+  </footer>
+
+  <!-- User logic app script -->
+  <script src="app.js"></script>
+</body>
+</html>
