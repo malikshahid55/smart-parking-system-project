@@ -1,7 +1,7 @@
 # Smart Parking System - Capstone Project
 
 **Course**: Web Technologies (SP26)  
-**Instructor**: BSCS 4th Semester (Sections  2M)  
+**Instructor**:  `[Sir Omer Ajmal]` 
 **Student Name**: `[Muhammad Shahid]`  
 **Roll Number**: `[F24BDOCS1M09006]`  
 
