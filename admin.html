@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Parking System | Admin Management</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="admin-mode">
+
+  <!-- Admin Navigation Bar -->
+  <nav class="navbar" id="admin-nav">
+    <div class="container">
+      <a href="index.html" class="nav-logo" id="admin-logo-link">
+        <span class="accent-dot"></span> Admin Portal
+      </a>
+      <div class="nav-links" id="admin-nav-links">
+        <a href="index.html" class="nav-item" id="nav-user-view">User Portal</a>
+        <a href="admin.html" class="nav-item active" id="nav-admin-view">Admin Dashboard</a>
+        <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Dark Mode">
+          <svg class="sun-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" id="sun-svg">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="container">
+    
+    <!-- Header Section -->
+    <header class="page-header" id="admin-header">
+      <div>
+        <h1 class="page-title" id="admin-title">System Overview</h1>
+        <p class="page-subtitle" id="admin-subtitle">Monitor parking usage, view metrics, and manage spot reservations.</p>
+      </div>
+    </header>
+
+    <!-- Error State Box -->
+    <div class="error-container" id="api-error-alert" role="alert">
+      <strong>Server Connection Interrupted:</strong> Unable to connect to the database. Verify JSON Server status.
+    </div>
+
+    <!-- Summary Statistics Section (Required: At least 3 stats) -->
+    <section class="stats-grid" id="stats-container">
+      
+      <!-- Stat 1: Total Reservations -->
+      <div class="stat-card" id="stat-total-bookings">
+        <div class="stat-icon-wrapper">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Total Reservations</span>
+          <span class="stat-number" id="stat-total-val">0</span>
+        </div>
+      </div>
+
+      <!-- Stat 2: Active Occupancy Rate -->
+      <div class="stat-card" id="stat-active-occupancy">
+        <div class="stat-icon-wrapper">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Active Bookings</span>
+          <span class="stat-number" id="stat-active-val">0%</span>
+        </div>
+      </div>
+
+      <!-- Stat 3: Est. Total Revenue -->
+      <div class="stat-card" id="stat-total-revenue">
+        <div class="stat-icon-wrapper">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M12 16v1M10 6h4M12 6c-3.313 0-6 2.687-6 6s2.687 6 6 6 6-2.687 6-6-2.687-6-6-6z"></path>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Estimated Revenue</span>
+          <span class="stat-number" id="stat-revenue-val">$0.00</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Main Table Listing Management -->
+    <section class="card-panel" id="table-panel">
+      
+      <!-- Toolbar containing Search and Filter -->
+      <div class="toolbar" id="admin-toolbar">
+        <h2 class="card-panel-title" id="admin-panel-title" style="margin-bottom: 0;">Reservation Management</h2>
+        
+        <div class="toolbar-controls" id="admin-controls">
+          <div class="search-wrapper" id="admin-search-wrapper">
+            <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <input type="text" id="search-input" class="form-control search-input" placeholder="Filter by driver/plate...">
+          </div>
+
+          <select id="filter-status" class="form-control filter-select">
+            <option value="all">All Statuses</option>
+            <option value="Active">Active Only</option>
+            <option value="Completed">Completed Only</option>
+            <option value="Cancelled">Cancelled Only</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Loading spinner for table -->
+      <div class="loading-container" id="table-loading-spinner">
+        <div class="spinner"></div>
+        <p>Loading database entries...</p>
+      </div>
+
+      <!-- Table element -->
+      <div class="table-responsive" id="table-view" style="display: none;">
+        <table class="admin-table" id="reservations-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Driver</th>
+              <th>License Plate</th>
+              <th>Vehicle Type</th>
+              <th>Date</th>
+              <th>Duration</th>
+              <th>Contact Phone</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            <!-- Dynamically populated by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty state illustration -->
+      <div class="empty-state" id="empty-state-card" style="display: none;">
+        <div class="empty-icon">📂</div>
+        <h3>No reservation records found</h3>
+        <p>Database is empty or your search filter has no matching entries.</p>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Edit Reservation Modal overlay -->
+  <div class="modal-overlay" id="edit-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Edit Reservation Details</h3>
+        <button class="modal-close" id="btn-close-modal" aria-label="Close modal">&times;</button>
+      </div>
+      
+      <form id="edit-form" novalidate>
+        <input type="hidden" id="edit-id">
+
+        <!-- Driver Name -->
+        <div class="form-group">
+          <label for="edit-driverName" class="form-label">Driver Name</label>
+          <input type="text" id="edit-driverName" class="form-control" required minlength="3">
+          <span class="invalid-feedback">Driver name must be at least 3 characters.</span>
+        </div>
+
+        <!-- License Plate -->
+        <div class="form-group">
+          <label for="edit-vehiclePlate" class="form-label">Vehicle Plate</label>
+          <input type="text" id="edit-vehiclePlate" class="form-control" required>
+          <span class="invalid-feedback">Vehicle plate format must be valid.</span>
+        </div>
+
+        <!-- Vehicle Type -->
+        <div class="form-group">
+          <label for="edit-vehicleType" class="form-label">Vehicle Type</label>
+          <select id="edit-vehicleType" class="form-control" required>
+            <option value="Regular">Regular Car</option>
+            <option value="EV">Electric Vehicle (EV)</option>
+            <option value="Motorcycle">Motorcycle</option>
+          </select>
+          <span class="invalid-feedback">Vehicle type selection is required.</span>
+        </div>
+
+        <!-- Contact Phone -->
+        <div class="form-group">
+          <label for="edit-contactPhone" class="form-label">Contact Phone</label>
+          <input type="tel" id="edit-contactPhone" class="form-control" required>
+          <span class="invalid-feedback">Phone format must be valid (e.g. 03XX-XXXXXXX).</span>
+        </div>
+
+        <!-- Booking Date -->
+        <div class="form-group">
+          <label for="edit-bookingDate" class="form-label">Booking Date</label>
+          <input type="date" id="edit-bookingDate" class="form-control" required>
+          <span class="invalid-feedback">Please choose a valid date.</span>
+        </div>
+
+        <!-- Duration -->
+        <div class="form-group">
+          <label for="edit-duration" class="form-label">Duration (Hours)</label>
+          <input type="number" id="edit-duration" class="form-control" required min="1" max="24">
+          <span class="invalid-feedback">Duration must be 1 to 24 hours.</span>
+        </div>
+
+        <!-- Reservation Status -->
+        <div class="form-group">
+          <label for="edit-status" class="form-label">Status</label>
+          <select id="edit-status" class="form-control" required>
+            <option value="Active">Active</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="btn-cancel-edit">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-edit">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Custom Deletion Confirmation Dialog overlay -->
+  <div class="confirm-overlay" id="confirm-overlay">
+    <div class="confirm-dialog">
+      <h3 class="confirm-title" id="confirm-title">Confirm Deletion</h3>
+      <p class="confirm-message" id="confirm-message">Are you sure you want to permanently delete this reservation record? This action cannot be undone.</p>
+      <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+        <button class="btn btn-outline btn-sm" id="btn-confirm-cancel">Cancel</button>
+        <button class="btn btn-danger btn-sm" id="btn-confirm-delete">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Footer -->
+  <footer id="admin-footer">
+    <div class="container">
+      <p>&copy; 2026 Smart Parking System. Admin Panel. Designed for BSCS Web Technologies Capstone.</p>
+    </div>
+  </footer>
+
+  <!-- Admin logic app script -->
+  <script src="admin.js"></script>
+</body>
+</html>
