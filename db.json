@@ -1,0 +1,55 @@
+{
+  "reservations": [
+    {
+      "id": "1",
+      "driverName": "Alexander Wright",
+      "vehiclePlate": "LEX-9011",
+      "vehicleType": "EV",
+      "bookingDate": "2026-06-05",
+      "duration": "3",
+      "contactPhone": "0333-1234567",
+      "status": "Active"
+    },
+    {
+      "id": "2",
+      "driverName": "Sophia Mercer",
+      "vehiclePlate": "KHI-4509",
+      "vehicleType": "Regular",
+      "bookingDate": "2026-06-06",
+      "duration": "2",
+      "contactPhone": "0321-9876543",
+      "status": "Completed"
+    },
+    {
+      "id": "3",
+      "driverName": "Marcus Vance",
+      "vehiclePlate": "LHR-7722",
+      "vehicleType": "Motorcycle",
+      "bookingDate": "2026-06-05",
+      "duration": "1",
+      "contactPhone": "0315-5553321",
+      "status": "Active"
+    },
+    {
+      "id": "4",
+      "driverName": "Elena Rostova",
+      "vehiclePlate": "ISB-8822",
+      "vehicleType": "EV",
+      "bookingDate": "2026-06-07",
+      "duration": "5",
+      "contactPhone": "0300-8889999",
+      "status": "Active"
+    },
+    {
+      "driverName": "shahid",
+      "vehiclePlate": "MNL 5556",
+      "vehicleType": "EV",
+      "contactPhone": "03000000092",
+      "bookingDate": "2026-12-11",
+      "duration": "1",
+      "status": "Active",
+      "id": "suC5bdYjajg"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
